@@ -15,6 +15,7 @@
     </script>
 
     <!-- <script src="./boardimage.js"></script> -->
+    <script src="./boardConfig.js"></script>
     <script src="./pinVisualisation.js"></script>
     <script src="./index.js" defer></script>
 
@@ -22,16 +23,24 @@
 </head>
 
 <body>
-    <select id="hardware-select">
-        <option value=""></option>
-        <option value="/shellyx-devkit-4-relays.svg">
-            ShellyX devkit 4 relays
-        </option>
-    </select>
+    <div class="board-config">
 
-    <div id="image-container"></div>
+        <div class="left-column">
+            <div class="pins-config-container" id="pins-config-container"></div>
+        </div>
+        <div class="right-column">
+            <select id="hardware-select">
+                <option value=""></option>
+                <option value="/shellyx-devkit-4-relays.svg">
+                    ShellyX devkit 4 relays
+                </option>
+            </select>
 
-    <table id="pins-table"></table>
+            <div id="image-container"></div>
+
+            <table id="pins-table"></table>
+        </div>
+    </div>
 </body>
 
 </html>

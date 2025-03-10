@@ -1,3 +1,18 @@
-#image-container {
+.board-config #image-container {
     width: 300px;
+}
+
+.board-config {
+    display: flex;
+    justify-content: stretch;
+}
+
+.board-config .left-column {
+    flex-grow: 1;
+}
+
+.board-config .io-config {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 }

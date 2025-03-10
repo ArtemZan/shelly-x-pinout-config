@@ -1,54 +1,32 @@
-window.pinVisualisation = {
+// Init
+// Set hardware picture
+// Render ios
+
+var pinVisualisation = {
     MAX_PINS: "{{ configurator.MAX_GPIO_PINS }}",
     colorInput: 'red',
     colorOutput: 'blue',
     colorInvalid: 'grey',
     container: undefined,
-    idPinsTable: undefined,
     pinsListTable: undefined,
     idPinsListSvg: undefined,
     pinsListSvg: undefined,
-    idNumberOfInputs: undefined,
-    inputNumberOfInputs: undefined,
-    idNumberOfOutputs: undefined,
-    inputNumberOfOutputs: undefined,
     idImage: undefined,
     image: undefined,
-    idImageSelector: undefined,
-    imageSelector: undefined,
+    imageUrl: undefined,
 
-    init(idInputNumberInputs, idInputNumberOutputs, idImage, idImageSelector, idTable, container) {
+    init(idImage, container) {
         this.container = (typeof container === 'string' ? document.querySelector('#' + container) : container) || document;
-        this.idNumberOfInputs = idInputNumberInputs;
-        this.idNumberOfOutputs = idInputNumberOutputs;
         this.idImage = idImage;
-        this.idImageSelector = idImageSelector;
-        this.idPinsTable = idTable;
-
-        this.initElementsAndEvents();
-    },
-    initElementsAndEvents(imageSelectorValue = undefined) { // split to allow re-attaching event handlers after replacing HTML with the server response
         this.image = this.container.querySelector('#' + this.idImage);
-        this.imageSelector = this.container.querySelector('#' + this.idImageSelector);
-        this.inputNumberOfInputs = this.container.querySelector('#' + this.idNumberOfInputs);
-        this.inputNumberOfOutputs = this.container.querySelector('#' + this.idNumberOfOutputs);
-        this.pinsListTable = this.container.querySelector('#' + this.idPinsTable);
-
-        if (!this.pinsListTable) {
-            console.error(`Invalid pin table - element id="#${this.idPinsTable}" is missing`);
-            return;
-        }
-
-        this.inputNumberOfInputs?.addEventListener('change', this.visualizePinsFromInputs.bind(this));
-        this.inputNumberOfOutputs?.addEventListener('change', this.visualizePinsFromInputs.bind(this));
-        if (this.imageSelector) {
-            this.imageSelector.addEventListener('change', this.updateImageFromSelect.bind(this));
-            if (imageSelectorValue) {
-                this.imageSelector.value = imageSelectorValue;
-            }
-            this.imageSelector.dispatchEvent(new Event('change'));
-        }
     },
+
+    setImageUrl(url) {
+        this.imageUrl = url
+
+        this.updateImage()
+    },
+
     setPin(id, color, strokeOpacity, functionDescr) {
         let path = this.image?.querySelector(`path#pin-${id}`);
         if (path) {
@@ -65,7 +43,7 @@ window.pinVisualisation = {
         } // if the table does not exist - already logged as error
     },
     clearPins() {
-        for (let i=0; i < this.MAX_PINS; i++) {
+        for (let i = 0; i < this.MAX_PINS; i++) {
             this.setPin(i, this.colorInvalid, 0, undefined);
         }
     },
@@ -91,73 +69,94 @@ window.pinVisualisation = {
             }
         }
         if (no > 0) {
-            for (let i = this.MAX_PINS-1; i >= Math.max(0, this.MAX_PINS - no); i--) {
+            for (let i = this.MAX_PINS - 1; i >= Math.max(0, this.MAX_PINS - no); i--) {
                 this.setPin(i, this.colorOutput, 1, '{% trans "Output" %}');
             }
         }
     },
-    async updateImageFromSelect(event) {
-        let errorMessage = undefined;
-        let imageContent = undefined;
-        let imageContentType = 'image/png'; // default image type
-        let url = this.imageSelector?.value;
-        let error = undefined;
-        if (url) {
-            try {
-                let response = await fetch(url);
-                if (response?.status?.toString() === "200") {
-                    // Notes:
-                    // 1. response headers must be iterated - cannot be accessed directly
-                    // 2. format of header entry:  {value: ['content-type', 'image/png'], done: false}
-                    for (let he of response.headers.entries()) {
-                        if (he[0] === 'content-type') {
-                            imageContentType = he[1];
-                            break;
-                        }
-                    }
 
-                    if (imageContentType === "image/svg+xml") {
-                        imageContent = await response.text();
-                        if (!!imageContent && imageContent.toString().indexOf('<svg') > -1) {
-                            this.image.innerHTML = imageContent;
-                            // remove the width & height, as they mess up the layout
-                            let svg = this.image.querySelector('svg');
-                            svg?.removeAttribute('width');
-                            svg?.removeAttribute('height');
-                            this.visualizePinsFromInputs();
-                        } else {
-                            errorMessage = 'Image is not a valid SVG graphic.';
-                            imageContent = undefined;
-                        }
-                    } else {
-                        imageContent = await response.blob();
-                        imageContent = await this.blobToDataUrl(imageContent);
-                        this.image.innerHTML = `<img src="${imageContent}" />`;
-                    }
-                } else {
-                    errorMessage = '{% trans "Cannot load module image. Please try again later." %}';
+    async tryUpdateImage(url) {
+        try {
+            const response = await fetch(url);
+
+            if (response?.status?.toString() !== "200") {
+                return {
+                    errorMessage: '{% trans "Cannot load module image. Please try again later." %}'
                 }
-            } catch (e) {
-                errorMessage = '{% trans "Cannot load module image (2). Please try again later." %}';
-                error = e;
             }
+
+            let imageContentType = 'image/png'; // default image type
+
+            // Notes:
+            // 1. response headers must be iterated - cannot be accessed directly
+            // 2. format of header entry:  {value: ['content-type', 'image/png'], done: false}
+            for (let he of response.headers.entries()) {
+                if (he[0] === 'content-type') {
+                    imageContentType = he[1];
+                    break;
+                }
+            }
+
+            let imageContent = undefined;
+
+            if (imageContentType === "image/svg+xml") {
+                imageContent = await response.text();
+                if (!imageContent || imageContent.toString().indexOf('<svg') === -1) {
+                    return {
+                        errorMessage: 'Image is not a valid SVG graphic.'
+                    }
+                }
+
+                this.image.innerHTML = imageContent;
+                // remove the width & height, as they mess up the layout
+                let svg = this.image.querySelector('svg');
+                svg?.removeAttribute('width');
+                svg?.removeAttribute('height');
+                this.visualizePinsFromInputs();
+
+                return {}
+            } else {
+                imageContent = await response.blob();
+                imageContent = await this.blobToDataUrl(imageContent);
+                this.image.innerHTML = `<img src="${imageContent}" />`;
+            }
+        } catch (e) {
+            return {
+                errorMessage: '{% trans "Cannot load module image (2). Please try again later." %}',
+                error: e
+            }
+        }
+    },
+
+    async updateImage() {
+        const url = this.imageUrl;
+
+        let errorMessage = undefined;
+        let error = undefined;
+        
+        if (url) {
+            const result = await this.tryUpdateImage(url)
+            errorMessage = result.errorMessage
+            error = result.error
         } else {
             errorMessage = '{% trans "No image specifed for that hardware form factor" %}';
         }
+
         if (errorMessage) {
             ShellyX.showToast("Cannot load module/devkit image for interactive visualization.", '', 5000);
             console.error(errorMessage);
         }
+
         if (error) {
             console.error(error);
         }
     },
     async blobToDataUrl(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = err => reject(err)
-        reader.readAsDataURL(blob)
-      })
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result)
+            reader.onerror = err => reject(err)
+            reader.readAsDataURL(blob)
+        })
     }
 }
