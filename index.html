@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        var ShellyX = {
+            showToast(message, a, timeout) {
+                console.log(message, timeout)
+            }
+        }
+    </script>
+
+    <!-- <script src="./boardimage.js"></script> -->
+    <script src="./pinVisualisation.js"></script>
+    <script src="./index.js" defer></script>
+
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <select id="hardware-select">
+        <option value=""></option>
+        <option value="/shellyx-devkit-4-relays.svg">
+            ShellyX devkit 4 relays
+        </option>
+    </select>
+
+    <div id="image-container"></div>
+
+    <table id="pins-table"></table>
+</body>
+
+</html>
