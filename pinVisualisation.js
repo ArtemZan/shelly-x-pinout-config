@@ -24,7 +24,7 @@ var pinVisualisation = {
     setImageUrl(url) {
         this.imageUrl = url
 
-        this.updateImage()
+        return this.updateImage()
     },
 
     setPin(id, color, strokeOpacity, functionDescr) {
@@ -47,33 +47,33 @@ var pinVisualisation = {
             this.setPin(i, this.colorInvalid, 0, undefined);
         }
     },
-    visualizePinsFromInputs(event) {
-        const currentInput = event?.currentTarget;
-        let ni = parseInt(this.inputNumberOfInputs?.value) || 0;
-        let no = parseInt(this.inputNumberOfOutputs?.value) || 0;
+    // visualizePinsFromInputs(event) {
+    //     const currentInput = event?.currentTarget;
+    //     let ni = parseInt(this.inputNumberOfInputs?.value) || 0;
+    //     let no = parseInt(this.inputNumberOfOutputs?.value) || 0;
 
-        if (ni + no > this.MAX_PINS) {
-            if (currentInput === this.inputNumberOfInputs) {
-                ni = this.MAX_PINS - no;
-                this.inputNumberOfInputs.value = ni;
-            } else if (currentInput === this.inputNumberOfOutputs) {
-                no = this.MAX_PINS - ni;
-                this.inputNumberOfOutputs.value = no;
-            }
-        }
+    //     if (ni + no > this.MAX_PINS) {
+    //         if (currentInput === this.inputNumberOfInputs) {
+    //             ni = this.MAX_PINS - no;
+    //             this.inputNumberOfInputs.value = ni;
+    //         } else if (currentInput === this.inputNumberOfOutputs) {
+    //             no = this.MAX_PINS - ni;
+    //             this.inputNumberOfOutputs.value = no;
+    //         }
+    //     }
 
-        this.clearPins();
-        if (ni > 0) {
-            for (let i = 0; i < Math.min(ni, this.MAX_PINS); i++) {
-                this.setPin(i, this.colorInput, 1, '{% trans "Input" %}');
-            }
-        }
-        if (no > 0) {
-            for (let i = this.MAX_PINS - 1; i >= Math.max(0, this.MAX_PINS - no); i--) {
-                this.setPin(i, this.colorOutput, 1, '{% trans "Output" %}');
-            }
-        }
-    },
+    //     this.clearPins();
+    //     if (ni > 0) {
+    //         for (let i = 0; i < Math.min(ni, this.MAX_PINS); i++) {
+    //             this.setPin(i, this.colorInput, 1, '{% trans "Input" %}');
+    //         }
+    //     }
+    //     if (no > 0) {
+    //         for (let i = this.MAX_PINS - 1; i >= Math.max(0, this.MAX_PINS - no); i--) {
+    //             this.setPin(i, this.colorOutput, 1, '{% trans "Output" %}');
+    //         }
+    //     }
+    // },
 
     async tryUpdateImage(url) {
         try {
@@ -112,7 +112,6 @@ var pinVisualisation = {
                 let svg = this.image.querySelector('svg');
                 svg?.removeAttribute('width');
                 svg?.removeAttribute('height');
-                this.visualizePinsFromInputs();
 
                 return {}
             } else {

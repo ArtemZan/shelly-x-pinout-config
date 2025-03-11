@@ -1,6 +1,13 @@
+const rolesColors = {
+    "input": "#ffff00",
+    "output": "#ff8800",
+    "PWM": "#00ff00"
+}
+
 var boardConfig = {
     pinsConfigContainerId: undefined,
     ioRoles: undefined,
+    ios: undefined,
 
     init({
         imageContainerId,
@@ -27,7 +34,7 @@ var boardConfig = {
         })
     },
 
-    onHardwareSelect(url) {
+    async onHardwareSelect(url) {
         // TO DO: fetch the ios from the backend
         const ios = [
             {
@@ -43,9 +50,30 @@ var boardConfig = {
                 "role": null,
                 "rolesAvailable": ["input", "output"] // if provided - limit roles; if missing - all roles are allowed 
             },
+            {
+                "id": 3,
+                "role": null
+            },
+            {
+                "id": 4,
+                "role": null
+            },
+            {
+                "id": 5,
+                "role": null
+            },
+            {
+                "id": 6,
+                "role": null
+            },
+            {
+                "id": 7,
+                "role": null
+            },
         ]
 
-        pinVisualisation.setImageUrl(url)
+        await pinVisualisation.setImageUrl(url)
+        pinVisualisation.clearPins()
 
         this.setIos(ios)
     },
@@ -53,6 +81,10 @@ var boardConfig = {
     setIos(ios) {
         this.ios = ios
         this.renderPinsConfig(ios)
+
+        for (const io of ios) {
+            pinVisualisation.setPin(io.id, rolesColors[io.role], 1, "pin " + io.id)
+        }
     },
 
     renderPinsConfig(ios) {
@@ -61,6 +93,12 @@ var boardConfig = {
         configContainer.innerText = ""
 
         configContainer.append(...ios.map(this.renderPinConfig.bind(this)))
+    },
+
+    updateIO(updatedIO) {
+        const updatedIOs = this.ios.map(io => io.id === updatedIO.id ? updatedIO : io)
+        this.setIos(updatedIOs)
+        this.onPinConfigChange(updatedIO)
     },
     renderPinConfig(io) {
         const ioContainer = document.createElement("div")
@@ -85,12 +123,20 @@ var boardConfig = {
         rolesSelect.value = io.role
         rolesSelect.disabled = !io.role
 
+        rolesSelect.addEventListener("change", e => {
+            this.updateIO({
+                ...io,
+                role: e.target.value
+            })
+        })
+
+
         activationCheckbox.addEventListener("change", e => {
             const newRoleValue = e.target.checked ? options[0] : null
             rolesSelect.value = newRoleValue
             rolesSelect.disabled = !newRoleValue
 
-            this.onPinConfigChange({
+            this.updateIO({
                 ...io,
                 role: newRoleValue
             })
