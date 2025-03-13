@@ -27,24 +27,42 @@ var pinVisualisation = {
         return this.updateImage()
     },
 
-    setPin(id, color, strokeOpacity, functionDescr) {
-        let path = this.image?.querySelector(`path#pin-${id}`);
-        if (path) {
-            path.setAttribute("stroke", color);
-            path.setAttribute("stroke-opacity", strokeOpacity);
-        } // if the image does not exist - already logged as error
+    // Returns if matched
+    setPinHighlight({ id, bgColor, strokeOpacity, highlightSuffix }) {
+        const highlight = this.image?.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
 
-        let elPinColor = this.pinsListTable?.querySelector(`#pin-${id}-color`);
-        let elPinFunction = this.pinsListTable?.querySelector(`#pin-${id}-function`);
-        if (elPinColor && elPinFunction) {
-            elPinColor.style.backgroundColor = color;
-            elPinColor.style.opacity = strokeOpacity;
-            elPinFunction.innerHTML = functionDescr ?? '&mdash;';
-        } // if the table does not exist - already logged as error
+        console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
+
+        if(!highlight) {
+            return false
+        }
+        
+        highlight.querySelectorAll("path").forEach(path => {
+            path.setAttribute("fill", bgColor);
+            // path.setAttribute("fill-opacity", strokeOpacity);
+        })
+
+        return true
+    },
+    setPinLabel({ id, color, labelText }) {
+        const label = this.image?.querySelector(`#io-${id}-label`);
+        
+        if (label) {
+            const labelHolder = label.querySelector("tspan")
+
+            labelHolder.innerHTML = labelText
+            label.setAttribute("fill", color);
+        } // if the image does not exist - already logged as error
     },
     clearPins() {
         for (let i = 0; i < this.MAX_PINS; i++) {
-            this.setPin(i, this.colorInvalid, 0, undefined);
+            this.setPin({
+                id: i,
+                color: this.colorInvalid,
+                bgColor: this.colorInvalid,
+                strokeOpacity: 0,
+                functionDescr: undefined
+            });
         }
     },
     // visualizePinsFromInputs(event) {
@@ -132,7 +150,7 @@ var pinVisualisation = {
 
         let errorMessage = undefined;
         let error = undefined;
-        
+
         if (url) {
             const result = await this.tryUpdateImage(url)
             errorMessage = result.errorMessage

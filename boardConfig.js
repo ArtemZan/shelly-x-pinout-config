@@ -1,7 +1,16 @@
 const rolesColors = {
-    "input": "#ffff00",
-    "output": "#ff8800",
-    "PWM": "#00ff00"
+    "INPUT": {
+        bgColor: "#ccaa00",
+        color: "black"
+    },
+    "OUTPUT": {
+        bgColor: "#ff8800",
+        color: "black"
+    },
+    "PWM": {
+        bgColor: "#00ff00",
+        color: "black"
+    }
 }
 
 var boardConfig = {
@@ -24,9 +33,18 @@ var boardConfig = {
         const hardwareSelect = document.getElementById(hardwareSelectId)
 
         this.ioRoles = [
-            "input",
-            "output",
-            "PWM"
+            {
+                id: "INPUT",
+                name: "Input"
+            },
+            {
+                id: "OUTPUT",
+                name: "Output"
+            },
+            {
+                id: "PWM",
+                name: "PWM"
+            }
         ]
 
         hardwareSelect.addEventListener("change", e => {
@@ -38,17 +56,12 @@ var boardConfig = {
         // TO DO: fetch the ios from the backend
         const ios = [
             {
-                "id": 0,
-                "role": "input" // enum: input / switch / cct cool / cct hot / ...
-            },
-            {
                 "id": 1,
-                "role": null
+                "role": "INPUT"
             },
             {
                 "id": 2,
-                "role": null,
-                "rolesAvailable": ["input", "output"] // if provided - limit roles; if missing - all roles are allowed 
+                "role": null
             },
             {
                 "id": 3,
@@ -60,15 +73,75 @@ var boardConfig = {
             },
             {
                 "id": 5,
-                "role": null
+                "role": null,
+                "rolesAvailable": [
+                    {
+                        role: "INPUT",
+                        group: "INPUT",
+                    },
+                    {
+                        role: "OUTPUT",
+                        group: "OUTPUT"
+                    },
+                    {
+                        role: "PWM",
+                        group: "OUTPUT"
+                    }
+                ] // if provided - limit roles; if missing - all roles are allowed 
             },
             {
                 "id": 6,
-                "role": null
+                "role": null,
+                "rolesAvailable": [
+                    {
+                        role: "INPUT",
+                        group: "INPUT",
+                    },
+                    {
+                        role: "OUTPUT",
+                        group: "OUTPUT"
+                    },
+                    {
+                        role: "PWM",
+                        group: "OUTPUT"
+                    }
+                ]
             },
             {
                 "id": 7,
-                "role": null
+                "role": null,
+                "rolesAvailable": [
+                    {
+                        role: "INPUT",
+                        group: "INPUT",
+                    },
+                    {
+                        role: "OUTPUT",
+                        group: "OUTPUT"
+                    },
+                    {
+                        role: "PWM",
+                        group: "OUTPUT"
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "role": null,
+                "rolesAvailable": [
+                    {
+                        role: "INPUT",
+                        group: "INPUT",
+                    },
+                    {
+                        role: "OUTPUT",
+                        group: "OUTPUT"
+                    },
+                    {
+                        role: "PWM",
+                        group: "OUTPUT"
+                    }
+                ]
             },
         ]
 
@@ -83,7 +156,34 @@ var boardConfig = {
         this.renderPinsConfig(ios)
 
         for (const io of ios) {
-            pinVisualisation.setPin(io.id, rolesColors[io.role], 1, "pin " + io.id)
+            const roleName = this.ioRoles.find(role => role.id === io.role)?.name
+            const name = (roleName || "IO") + " " + io.id
+
+            pinVisualisation.setPinLabel({
+                id: io.id,
+                color: rolesColors[io.role]?.color || "#333333",
+                labelText: name
+            })
+
+            pinVisualisation.setPinHighlight({
+                id: io.id,
+                bgColor: rolesColors[io.role]?.bgColor || "#bbbbbb",
+                highlightSuffix: ""
+            })
+
+            if (io.rolesAvailable) {
+                const activeGroup = io.rolesAvailable.find(role => role.role === io.role)?.group
+
+                const activeBgColor = rolesColors[io.role]?.bgColor || "#bbbbbb"
+
+                for (const availableRole of io.rolesAvailable) {
+                    pinVisualisation.setPinHighlight({
+                        id: io.id,
+                        bgColor: availableRole.group === activeGroup ? activeBgColor : "#bbbbbb",
+                        highlightSuffix: `-${availableRole.group}`
+                    })
+                }
+            }
         }
     },
 
@@ -112,11 +212,12 @@ var boardConfig = {
 
         const rolesSelect = document.createElement("select")
 
-        const options = io.rolesAvailable || this.ioRoles
+        const options = io.rolesAvailable?.map(availableRole => this.ioRoles.find(role => role.id === availableRole.role)) || this.ioRoles
+
         const optionsElements = options.map(option => {
             const element = document.createElement("option")
-            element.value = option
-            element.innerText = option
+            element.value = option.id
+            element.innerText = option.name
             return element
         })
         rolesSelect.append(...optionsElements)
@@ -132,7 +233,7 @@ var boardConfig = {
 
 
         activationCheckbox.addEventListener("change", e => {
-            const newRoleValue = e.target.checked ? options[0] : null
+            const newRoleValue = e.target.checked ? options[0]?.id : null
             rolesSelect.value = newRoleValue
             rolesSelect.disabled = !newRoleValue
 
