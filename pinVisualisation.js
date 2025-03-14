@@ -3,7 +3,6 @@
 // Render ios
 
 var pinVisualisation = {
-    MAX_PINS: "{{ configurator.MAX_GPIO_PINS }}",
     colorInput: 'red',
     colorOutput: 'blue',
     colorInvalid: 'grey',
@@ -54,45 +53,6 @@ var pinVisualisation = {
             label.setAttribute("fill", color);
         } // if the image does not exist - already logged as error
     },
-    clearPins() {
-        for (let i = 0; i < this.MAX_PINS; i++) {
-            this.setPin({
-                id: i,
-                color: this.colorInvalid,
-                bgColor: this.colorInvalid,
-                strokeOpacity: 0,
-                functionDescr: undefined
-            });
-        }
-    },
-    // visualizePinsFromInputs(event) {
-    //     const currentInput = event?.currentTarget;
-    //     let ni = parseInt(this.inputNumberOfInputs?.value) || 0;
-    //     let no = parseInt(this.inputNumberOfOutputs?.value) || 0;
-
-    //     if (ni + no > this.MAX_PINS) {
-    //         if (currentInput === this.inputNumberOfInputs) {
-    //             ni = this.MAX_PINS - no;
-    //             this.inputNumberOfInputs.value = ni;
-    //         } else if (currentInput === this.inputNumberOfOutputs) {
-    //             no = this.MAX_PINS - ni;
-    //             this.inputNumberOfOutputs.value = no;
-    //         }
-    //     }
-
-    //     this.clearPins();
-    //     if (ni > 0) {
-    //         for (let i = 0; i < Math.min(ni, this.MAX_PINS); i++) {
-    //             this.setPin(i, this.colorInput, 1, '{% trans "Input" %}');
-    //         }
-    //     }
-    //     if (no > 0) {
-    //         for (let i = this.MAX_PINS - 1; i >= Math.max(0, this.MAX_PINS - no); i--) {
-    //             this.setPin(i, this.colorOutput, 1, '{% trans "Output" %}');
-    //         }
-    //     }
-    // },
-
     async tryUpdateImage(url) {
         try {
             const response = await fetch(url);

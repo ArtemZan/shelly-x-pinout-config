@@ -32,6 +32,14 @@ var boardConfig = {
 
         const hardwareSelect = document.getElementById(hardwareSelectId)
 
+        const resetPinsButton = document.getElementById("reset-pins-button")
+        resetPinsButton.addEventListener("click", () => {
+            this.setIos(this.ios.map(io => ({
+                ...io,
+                role: null
+            })))
+        })
+
         this.ioRoles = [
             {
                 id: "INPUT",
@@ -144,11 +152,12 @@ var boardConfig = {
                 ]
             },
         ]
-
         await pinVisualisation.setImageUrl(url)
-        pinVisualisation.clearPins()
-
+        
         this.setIos(ios)
+
+        const configContainer = document.getElementById("board-config-container")
+        configContainer.style.display = null
     },
 
     setIos(ios) {
