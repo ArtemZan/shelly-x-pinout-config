@@ -30,7 +30,7 @@ var pinVisualisation = {
     setPinHighlight({ id, bgColor, strokeOpacity, highlightSuffix }) {
         const highlight = this.image?.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
 
-        console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
+        // console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
 
         if(!highlight) {
             return false
@@ -126,6 +126,15 @@ var pinVisualisation = {
 
         if (error) {
             console.error(error);
+        }
+
+        const pins = [...this.image.querySelectorAll(".pin")]
+        console.log(this.image, pins)
+
+        for(const pin of pins) {
+            pin.addEventListener("click", () => {
+                console.log("Click pin: ", pin)
+            })
         }
     },
     async blobToDataUrl(blob) {

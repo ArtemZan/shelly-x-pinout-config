@@ -4,15 +4,21 @@
 
 .board-config {
     display: flex;
+    flex-direction: column;
     justify-content: stretch;
 }
 
-.board-config .left-column {
-    flex-grow: 1;
+.board-config .hardware-select {
+    width: 150px;
 }
 
 .board-config .io-config {
     display: flex;
     align-items: center;
     gap: 0.5em;
+}
+
+.pin:hover {
+    opacity: 0.6;
+    cursor: pointer;
 }

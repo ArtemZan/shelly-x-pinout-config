@@ -24,24 +24,19 @@
 
 <body>
     <div class="board-config">
+        <select id="hardware-select" class="hardware-select">
+            <option value=""></option>
+            <option value="/shellyx-devkit-4-relays 1.svg">
+                ShellyX devkit 4 relays
+            </option>
+        </select>
+        <div id="image-container"></div>
 
-        <div class="left-column" id="board-config-container" style="display: none;">
+        <div id="board-config-container" style="display: none;">
             <div class="pins-config-container" id="pins-config-container">
 
             </div>
             <button id="reset-pins-button">Reset pins</button>
-        </div>
-        <div class="right-column">
-            <select id="hardware-select">
-                <option value=""></option>
-                <option value="/shellyx-devkit-4-relays 1.svg">
-                    ShellyX devkit 4 relays
-                </option>
-            </select>
-
-            <div id="image-container"></div>
-
-            <table id="pins-table"></table>
         </div>
     </div>
 </body>
