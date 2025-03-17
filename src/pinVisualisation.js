@@ -1,34 +1,37 @@
-// Init
 // Set hardware picture
 // Render ios
 
-var pinVisualisation = {
+const pinVisualisation = {
     colorInput: 'red',
     colorOutput: 'blue',
     colorInvalid: 'grey',
-    container: undefined,
     pinsListTable: undefined,
     idPinsListSvg: undefined,
     pinsListSvg: undefined,
     idImage: undefined,
-    image: undefined,
     imageUrl: undefined,
 
-    init(idImage, container) {
-        this.container = (typeof container === 'string' ? document.querySelector('#' + container) : container) || document;
-        this.idImage = idImage;
-        this.image = this.container.querySelector('#' + this.idImage);
+    init(imageId) {
+        this.idImage = imageId;
     },
 
-    setImageUrl(url) {
+    async setImageUrl(url) {
         this.imageUrl = url
 
-        return this.updateImage()
+        await this.updateImage()
+    },
+
+    addPinClickListener(ioId, callback) {
+        const pin = document.querySelector(`#${this.idImage} #io-${ioId}`)
+
+        pin.addEventListener("click", e => {
+            callback(e)
+        })
     },
 
     // Returns if matched
     setPinHighlight({ id, bgColor, strokeOpacity, highlightSuffix }) {
-        const highlight = this.image?.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
+        const highlight = document.querySelector(`#${this.idImage} #io-${id}-highlight${highlightSuffix || ""}`);
 
         // console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
 
@@ -44,7 +47,7 @@ var pinVisualisation = {
         return true
     },
     setPinLabel({ id, color, labelText }) {
-        const label = this.image?.querySelector(`#io-${id}-label`);
+        const label = document.querySelector(`#${this.idImage} #io-${id}-label`);
         
         if (label) {
             const labelHolder = label.querySelector("tspan")
@@ -85,9 +88,9 @@ var pinVisualisation = {
                     }
                 }
 
-                this.image.innerHTML = imageContent;
+                document.getElementById(this.idImage).innerHTML = imageContent;
                 // remove the width & height, as they mess up the layout
-                let svg = this.image.querySelector('svg');
+                let svg = document.querySelector(`#${this.idImage} svg`);
                 svg?.removeAttribute('width');
                 svg?.removeAttribute('height');
 
@@ -95,7 +98,7 @@ var pinVisualisation = {
             } else {
                 imageContent = await response.blob();
                 imageContent = await this.blobToDataUrl(imageContent);
-                this.image.innerHTML = `<img src="${imageContent}" />`;
+                document.getElementById(this.idImage).innerHTML = `<img src="${imageContent}" />`;
             }
         } catch (e) {
             return {
@@ -120,21 +123,12 @@ var pinVisualisation = {
         }
 
         if (errorMessage) {
-            ShellyX.showToast("Cannot load module/devkit image for interactive visualization.", '', 5000);
+            boardConfig.onError("Cannot load module/devkit image for interactive visualization.")
             console.error(errorMessage);
         }
 
         if (error) {
             console.error(error);
-        }
-
-        const pins = [...this.image.querySelectorAll(".pin")]
-        console.log(this.image, pins)
-
-        for(const pin of pins) {
-            pin.addEventListener("click", () => {
-                console.log("Click pin: ", pin)
-            })
         }
     },
     async blobToDataUrl(blob) {

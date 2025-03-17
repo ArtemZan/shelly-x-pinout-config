@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../src/boardConfig.js"></script>
+    <script src="../src/pinVisualisation.js"></script>
+    <script src="../src/pinConfig.js"></script>
+
+    <link rel="stylesheet" href="../src/boardConfig.css">
+
+
+    <!-- For test only -->
+    <script src="./index.js" defer></script>
+
+    <!-- For test only -->
+    <link rel="stylesheet" href="./wrapper.css">
+</head>
+
+<body>
+    <div class="board-config-wrapper">
+
+        <!-- Embed this element in your app -->
+        <div class="board-config">
+            <select id="hardware-select" class="hardware-select">
+                <option value=""></option>
+                <option value="/backend/shellyx-devkit-4-relays 1.svg">
+                    ShellyX devkit 4 relays
+                </option>
+            </select>
+            <div id="image-container"></div>
+
+            <div id="board-config-container" style="display: none;">
+                <div class="pins-config-container" id="pins-config-container">
+
+                </div>
+                <button id="reset-pins-button">Reset pins</button>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

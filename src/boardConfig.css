@@ -1,0 +1,44 @@
+.board-config #image-container {
+    width: 100%;
+}
+
+.board-config {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.board-config .hardware-select {
+    width: 150px;
+    margin: 0 auto;
+}
+
+.board-config .io-config {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.board-config .pin:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.board-config .io-config {
+    position: relative;
+    width: max-content;
+}
+
+.board-config .config-highlight {
+    position: absolute;
+    inset: 2px;
+    border: 5px solid #ffaa44;
+    visibility: hidden;
+    transition: inset 0.75s, opacity 0.75s;
+}
+
+.board-config .config-highlight.active {
+    visibility: visible;
+    inset: -4px;
+    opacity: 0;
+}

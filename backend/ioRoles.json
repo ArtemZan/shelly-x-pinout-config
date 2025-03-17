@@ -1,0 +1,14 @@
+[
+    {
+        "id": "INPUT",
+        "name": "Input"
+    },
+    {
+        "id": "OUTPUT",
+        "name": "Output"
+    },
+    {
+        "id": "PWM",
+        "name": "PWM"
+    }
+]

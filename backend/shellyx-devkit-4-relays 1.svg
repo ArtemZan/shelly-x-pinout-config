@@ -3,7 +3,7 @@
 <g id="group">
 <rect id="Rectangle" x="599" y="4.00002" width="439" height="531" transform="rotate(90 599 4.00002)" fill="url(#pattern0_1_2)"></rect>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-8" class="pin">
 <g id="io-8-highlight-OUTPUT">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M590 395L592 321.232L422 321.231L420 395L590 395ZM595 318L419 318L417 398L593 398L595 318Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M593 360.5L631 312.5L632.568 313.741L594.568 361.741L593 360.5Z" fill="#F7821A"></path>
@@ -19,7 +19,7 @@
 </g>
 <text id="io-8-label" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="653.457" y="317.864">IO 8</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-7" class="pin">
 <g id="io-7-highlight-OUTPUT">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M592 302.5L592 237.5L422 237.5L422 302.5L592 302.5ZM595 234.5L419 234.5L419 306L595 306L595 234.5Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M593 273.5L631 225.5L632.568 226.741L594.568 274.741L593 273.5Z" fill="#F7821A"></path>
@@ -35,7 +35,7 @@
 </g>
 <text id="io-7-label" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="655.227" y="229.864">IO 7</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-6" class="pin">
 <g id="io-6-highlight-OUTPUT">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M592 215.5L592 150.5L422 150.5L422 215.5L592 215.5ZM595 147.5L419 147.5L419 219L595 219L595 147.5Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M593 186.5L631 138.5L632.568 139.741L594.568 187.741L593 186.5Z" fill="#F7821A"></path>
@@ -51,7 +51,7 @@
 </g>
 <text id="io-6-label" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="652.41" y="142.864">IO 6</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-5" class="pin">
 <g id="io-5-highlight-OUTPUT">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M592 132L592 61L422 61L422 132L592 132ZM595 58L419 58L419 135L595 135L595 58Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M593 97L631 49L632.568 50.2414L594.568 98.2414L593 97Z" fill="#F7821A"></path>
@@ -67,7 +67,7 @@
 </g>
 <text id="io-5-label" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="652.004" y="53.8636">IO 5</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-4" class="pin">
 <g id="io-4-highlight">
 <path d="M56 152C59.866 152 63 155.134 63 159C63 162.866 59.866 166 56 166L7 166C3.13401 166 -4.74968e-07 162.866 -3.0598e-07 159C-1.36992e-07 155.134 3.13401 152 7 152L56 152Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M62.7158 158L86 158L86 160L62.7158 160L62.7158 158Z" fill="#F7821A"></path>
@@ -75,7 +75,7 @@
 </g>
 <text id="io-4-label" transform="translate(5 154)" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="0.304688" y="8.86364">IO 4</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-3" class="pin">
 <g id="io-3-highlight">
 <path d="M56 137C59.866 137 63 140.134 63 144C63 147.866 59.866 151 56 151L7 151C3.13401 151 -4.74968e-07 147.866 -3.0598e-07 144C-1.36992e-07 140.134 3.13401 137 7 137L56 137Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M62 143L86 143L86 145L62 145L62 143Z" fill="#F7821A"></path>
@@ -83,7 +83,7 @@
 </g>
 <text id="io-3-label" transform="translate(5 139)" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="0.333984" y="8.86364">IO 3</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-2" class="pin">
 <g id="io-2-highlight">
 <path d="M56 121C59.866 121 63 124.134 63 128C63 131.866 59.866 135 56 135L7 135C3.13401 135 -4.74968e-07 131.866 -3.0598e-07 128C-1.36992e-07 124.134 3.13401 121 7 121L56 121Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M62 127L86 127L86 129L62 129L62 127Z" fill="#F7821A"></path>
@@ -91,7 +91,7 @@
 </g>
 <text id="io-2-label" transform="translate(5 123)" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="0.0214844" y="8.86364">IO 2</tspan></text>
 </g>
-<g id="Pin label" class="pin">
+<g id="io-1" class="pin">
 <g id="io-1-highlight">
 <path d="M56 105.071C59.866 105.071 63 108.205 63 112.071C63 115.937 59.866 119.071 56 119.071L7 119.071C3.13401 119.071 -4.78066e-07 115.937 -3.09078e-07 112.071C-1.4009e-07 108.205 3.13401 105.071 7 105.071L56 105.071Z" fill="#F7821A"></path>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M62.5 111L86 111L86 113L62.5 113L62.5 111Z" fill="#F7821A"></path>

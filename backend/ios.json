@@ -1,0 +1,90 @@
+[
+    {
+        "id": 1,
+        "role": "INPUT"
+    },
+    {
+        "id": 2,
+        "role": null
+    },
+    {
+        "id": 3,
+        "role": null
+    },
+    {
+        "id": 4,
+        "role": null
+    },
+    {
+        "id": 5,
+        "role": null,
+        "rolesAvailable": [
+            {
+                "role": "INPUT",
+                "group": "INPUT"
+            },
+            {
+                "role": "OUTPUT",
+                "group": "OUTPUT"
+            },
+            {
+                "role": "PWM",
+                "group": "OUTPUT"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "role": null,
+        "rolesAvailable": [
+            {
+                "role": "INPUT",
+                "group": "INPUT"
+            },
+            {
+                "role": "OUTPUT",
+                "group": "OUTPUT"
+            },
+            {
+                "role": "PWM",
+                "group": "OUTPUT"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "role": null,
+        "rolesAvailable": [
+            {
+                "role": "INPUT",
+                "group": "INPUT"
+            },
+            {
+                "role": "OUTPUT",
+                "group": "OUTPUT"
+            },
+            {
+                "role": "PWM",
+                "group": "OUTPUT"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "role": null,
+        "rolesAvailable": [
+            {
+                "role": "INPUT",
+                "group": "INPUT"
+            },
+            {
+                "role": "OUTPUT",
+                "group": "OUTPUT"
+            },
+            {
+                "role": "PWM",
+                "group": "OUTPUT"
+            }
+        ]
+    }
+]
