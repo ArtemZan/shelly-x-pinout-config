@@ -1,10 +1,8 @@
 const pinConfig = {
-    renderPinsConfig(ios, pinsConfigContainerId) {
-        const configContainer = document.getElementById(pinsConfigContainerId)
+    renderPinsConfig(ios, pinsConfigContainer) {
+        pinsConfigContainer.innerText = ""
 
-        configContainer.innerText = ""
-
-        configContainer.append(...ios.map(this._renderPinConfig.bind(this)))
+        pinsConfigContainer.append(...ios.map(this._renderPinConfig.bind(this)))
     },
     _createPinRoleSelect(io, rolesOptions) {
         const rolesSelect = document.createElement("select")

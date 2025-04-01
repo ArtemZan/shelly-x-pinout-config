@@ -1,14 +1,11 @@
 (() => {
-    boardConfig.init({
-        imageContainerId: 'image-container', 
-        hardwareSelectId: 'hardware-select', 
-        pinsConfigContainerId: 'pins-config-container',
-        onPinConfigChange: (io) => {
-            // To DO: send PUT request
-            console.log(io)
-        },
-        onError(message) {
-            alert(message)
-        }
+    const board = document.getElementById("board")
+
+    board.addEventListener("pin-config-change", e => {
+        console.log("pin-config-change: ", e.updatedIO)
+    })
+
+    board.addEventListener("pin-config-error", e => {
+        console.log("pin-config-error: ", e.error)
     })
 })()

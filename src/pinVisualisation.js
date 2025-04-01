@@ -8,11 +8,10 @@ const pinVisualisation = {
     pinsListTable: undefined,
     idPinsListSvg: undefined,
     pinsListSvg: undefined,
-    idImage: undefined,
     imageUrl: undefined,
 
-    init(imageId) {
-        this.idImage = imageId;
+    init(image) {
+        this.image = image;
     },
 
     async setImageUrl(url) {
@@ -22,7 +21,7 @@ const pinVisualisation = {
     },
 
     addPinClickListener(ioId, callback) {
-        const pin = document.querySelector(`#${this.idImage} #io-${ioId}`)
+        const pin = this.image.querySelector(`#io-${ioId}`)
 
         pin.addEventListener("click", e => {
             callback(e)
@@ -31,7 +30,7 @@ const pinVisualisation = {
 
     // Returns if matched
     setPinHighlight({ id, bgColor, strokeOpacity, highlightSuffix }) {
-        const highlight = document.querySelector(`#${this.idImage} #io-${id}-highlight${highlightSuffix || ""}`);
+        const highlight = this.image.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
 
         // console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
 
@@ -47,7 +46,7 @@ const pinVisualisation = {
         return true
     },
     setPinLabel({ id, color, labelText }) {
-        const label = document.querySelector(`#${this.idImage} #io-${id}-label`);
+        const label = this.image.querySelector(`#io-${id}-label`);
         
         if (label) {
             const labelHolder = label.querySelector("tspan")
@@ -88,9 +87,9 @@ const pinVisualisation = {
                     }
                 }
 
-                document.getElementById(this.idImage).innerHTML = imageContent;
+                this.image.innerHTML = imageContent;
                 // remove the width & height, as they mess up the layout
-                let svg = document.querySelector(`#${this.idImage} svg`);
+                let svg = this.image.querySelector(`svg`);
                 svg?.removeAttribute('width');
                 svg?.removeAttribute('height');
 
@@ -98,7 +97,7 @@ const pinVisualisation = {
             } else {
                 imageContent = await response.blob();
                 imageContent = await this.blobToDataUrl(imageContent);
-                document.getElementById(this.idImage).innerHTML = `<img src="${imageContent}" />`;
+                this.image.innerHTML = `<img src="${imageContent}" />`;
             }
         } catch (e) {
             return {

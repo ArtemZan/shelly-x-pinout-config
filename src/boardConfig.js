@@ -14,32 +14,29 @@ const rolesColors = {
 }
 
 const boardConfig = {
-    pinsConfigContainerId: undefined,
-    resetPinsButtonId: undefined,
-    boardConfigContainerId: undefined,
+    pinsConfigContainer: undefined,
+    resetPinsButton: undefined,
+    boardConfigContainer: undefined,
     ioRoles: undefined,
     ios: undefined,
 
     async init({
-        imageContainerId = "image-container",
-        hardwareSelectId = "hardware-select",
-        pinsConfigContainerId = "pins-config-container",
-        resetPinsButtonId = "reset-pins-button",
-        boardConfigContainerId = "board-config-container",
+        imageContainer,
+        hardwareSelect,
+        pinsConfigContainer,
+        resetPinsButton,
+        boardConfigContainer,
         onPinConfigChange,
         onError
     }) {
-        this.pinsConfigContainerId = pinsConfigContainerId
+        this.pinsConfigContainer = pinsConfigContainer
         this.onPinConfigChange = onPinConfigChange
         this.onError = onError
-        this.resetPinsButtonId = resetPinsButtonId
-        this.boardConfigContainerId = boardConfigContainerId
+        this.resetPinsButton = resetPinsButton
+        this.boardConfigContainer = boardConfigContainer
 
-        pinVisualisation.init(imageContainerId)
+        pinVisualisation.init(imageContainer)
 
-        const hardwareSelect = document.getElementById(hardwareSelectId)
-
-        const resetPinsButton = document.getElementById(this.resetPinsButtonId)
         resetPinsButton.addEventListener("click", () => {
             this.setIos(this.ios.map(io => ({
                 ...io,
@@ -75,8 +72,7 @@ const boardConfig = {
 
         this._addIosClickListener()
 
-        const configContainer = document.getElementById(this.boardConfigContainerId)
-        configContainer.style.display = null
+        this.boardConfigContainer.style.display = null
     },
 
     async _fetchIos() {
@@ -92,7 +88,7 @@ const boardConfig = {
 
     setIos(ios) {
         this.ios = ios
-        pinConfig.renderPinsConfig(ios, this.pinsConfigContainerId)
+        pinConfig.renderPinsConfig(ios, this.pinsConfigContainer)
 
         for (const io of ios) {
             const roleName = this.ioRoles.find(role => role.id === io.role)?.name
