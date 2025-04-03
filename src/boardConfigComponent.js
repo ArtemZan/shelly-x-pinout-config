@@ -1,7 +1,6 @@
 (() => {
     class BoardConfigComponent extends HTMLElement {
         constructor() {
-            console.log("HI")
             super()
 
             const container = document.createElement("div")
@@ -11,9 +10,8 @@
 
             container.append(select)
 
-            const imageContainer = document.createElement("div")
-            imageContainer.classList.add("image-container")
-            container.append(imageContainer)
+            this.#imageContainer = document.createElement("pinout")
+            container.append(this.#imageContainer)
 
             const boardConfigContainer = this.#createBoardConfigContainer()
 
@@ -26,8 +24,7 @@
 
             const boardConfigComponent = this
 
-            boardConfig.init({
-                imageContainer: imageContainer,
+            this.init({
                 hardwareSelect: select,
                 pinsConfigContainer: boardConfigContainer.querySelector("#pins-config-container"),
                 resetPinsButton: boardConfigContainer.querySelector("#reset-pins-button"),
@@ -77,6 +74,100 @@
             }
 
             return select
+        }
+
+        #imageContainer = undefined
+        pinsConfigContainer = undefined
+        resetPinsButton = undefined
+        boardConfigContainer = undefined
+        ioRoles = undefined
+        ios = undefined
+
+        async init({
+            hardwareSelect,
+            pinsConfigContainer,
+            resetPinsButton,
+            boardConfigContainer,
+            onPinConfigChange,
+            onError
+        }) {
+            this.pinsConfigContainer = pinsConfigContainer
+            this.onPinConfigChange = onPinConfigChange
+            this.onError = onError
+            this.resetPinsButton = resetPinsButton
+            this.boardConfigContainer = boardConfigContainer
+
+            resetPinsButton.addEventListener("click", () => {
+                this.setIos(this.ios.map(io => ({
+                    ...io,
+                    role: null
+                })))
+            })
+
+
+            hardwareSelect.addEventListener("change", e => {
+                this.#onHardwareSelect(e.target.value)
+            })
+
+            await this.#fetchRoles()
+        }
+
+        async #fetchRoles() {
+            const response = await fetch("/backend/ioRoles.json")
+
+            if (!response.ok) {
+                this.onError(await response.text())
+                return
+            }
+
+            this.ioRoles = await response.json()
+        }
+
+        async #onHardwareSelect(url) {
+            // TO DO: fetch the ios from the backend
+            const ios = await this._fetchIos()
+            await pinVisualisation.setImageUrl(url)
+
+            this.setIos(ios)
+
+            this._addIosClickListener()
+
+            this.boardConfigContainer.style.display = null
+        }
+
+        async _fetchIos() {
+            const response = await fetch("/backend/ios.json")
+
+            if (!response.ok) {
+                this.onError(await response.text())
+                return
+            }
+
+            return await response.json()
+        }
+
+
+
+        getIos() {
+            return this.ios
+        }
+
+        _onPinClick(ioId) {
+            pinConfig.highlightPinConfig(ioId)
+        }
+
+        _addIosClickListener() {
+            for (const io of this.ios) {
+                pinVisualisation.addPinClickListener(io.id, () => {
+                    this._onPinClick(io.id)
+                })
+            }
+        }
+
+        _updateIO(updatedIO) {
+            const updatedIOs = this.ios.map(io => io.id === updatedIO.id ? updatedIO : io)
+            this.setIos(updatedIOs)
+            this.onPinConfigChange(updatedIO)
         }
     }
 

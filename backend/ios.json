@@ -1,7 +1,8 @@
 [
     {
         "id": 1,
-        "role": "INPUT"
+        "role": "INPUT",
+        "label": "Input 1"
     },
     {
         "id": 2,

@@ -2,16 +2,10 @@
 // Render ios
 
 const pinVisualisation = {
-    colorInput: 'red',
-    colorOutput: 'blue',
-    colorInvalid: 'grey',
-    pinsListTable: undefined,
-    idPinsListSvg: undefined,
-    pinsListSvg: undefined,
     imageUrl: undefined,
 
-    init(image) {
-        this.image = image;
+    init(imageContainer) {
+        this.imageContainer = imageContainer;
     },
 
     async setImageUrl(url) {
@@ -21,7 +15,7 @@ const pinVisualisation = {
     },
 
     addPinClickListener(ioId, callback) {
-        const pin = this.image.querySelector(`#io-${ioId}`)
+        const pin = this.imageContainer.querySelector(`#io-${ioId}`)
 
         pin.addEventListener("click", e => {
             callback(e)
@@ -30,7 +24,7 @@ const pinVisualisation = {
 
     // Returns if matched
     setPinHighlight({ id, bgColor, strokeOpacity, highlightSuffix }) {
-        const highlight = this.image.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
+        const highlight = this.imageContainer.querySelector(`#io-${id}-highlight${highlightSuffix || ""}`);
 
         // console.log("setPinHighlight: ", `#io-${id}-highlight${highlightSuffix || ""}`, highlight)
 
@@ -45,8 +39,9 @@ const pinVisualisation = {
 
         return true
     },
+
     setPinLabel({ id, color, labelText }) {
-        const label = this.image.querySelector(`#io-${id}-label`);
+        const label = this.imageContainer.querySelector(`#io-${id}-label`);
         
         if (label) {
             const labelHolder = label.querySelector("tspan")
@@ -87,9 +82,9 @@ const pinVisualisation = {
                     }
                 }
 
-                this.image.innerHTML = imageContent;
+                this.imageContainer.innerHTML = imageContent;
                 // remove the width & height, as they mess up the layout
-                let svg = this.image.querySelector(`svg`);
+                let svg = this.imageContainer.querySelector(`svg`);
                 svg?.removeAttribute('width');
                 svg?.removeAttribute('height');
 
@@ -97,7 +92,7 @@ const pinVisualisation = {
             } else {
                 imageContent = await response.blob();
                 imageContent = await this.blobToDataUrl(imageContent);
-                this.image.innerHTML = `<img src="${imageContent}" />`;
+                this.imageContainer.innerHTML = `<img src="${imageContent}" />`;
             }
         } catch (e) {
             return {

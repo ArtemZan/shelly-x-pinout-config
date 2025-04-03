@@ -86,48 +86,10 @@ const boardConfig = {
         return await response.json()
     },
 
-    setIos(ios) {
-        this.ios = ios
-        pinConfig.renderPinsConfig(ios, this.pinsConfigContainer)
-
-        for (const io of ios) {
-            const roleName = this.ioRoles.find(role => role.id === io.role)?.name
-            const name = (roleName || "IO") + " " + io.id
-
-            pinVisualisation.setPinLabel({
-                id: io.id,
-                color: rolesColors[io.role]?.color || "#333333",
-                labelText: name
-            })
-
-            this._updateIoHighlight(io)
-        }
-    },
+    
 
     getIos() {
         return this.ios
-    },
-
-    _updateIoHighlight(io) {
-        pinVisualisation.setPinHighlight({
-            id: io.id,
-            bgColor: rolesColors[io.role]?.bgColor || "#bbbbbb",
-            highlightSuffix: ""
-        })
-
-        if (io.rolesAvailable) {
-            const activeGroup = io.rolesAvailable.find(role => role.role === io.role)?.group
-
-            const activeBgColor = rolesColors[io.role]?.bgColor || "#bbbbbb"
-
-            for (const availableRole of io.rolesAvailable) {
-                pinVisualisation.setPinHighlight({
-                    id: io.id,
-                    bgColor: availableRole.group === activeGroup ? activeBgColor : "#bbbbbb",
-                    highlightSuffix: `-${availableRole.group}`
-                })
-            }
-        }
     },
 
     _onPinClick(ioId) {
